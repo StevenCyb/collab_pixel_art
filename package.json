@@ -1,0 +1,21 @@
+{
+  "name": "collab_pixel_art",
+  "version": "0.1.0",
+  "description": "A simple collaborative pixel art project",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "author": "Steven Cybinski",
+  "license": "MIT",
+  "devDependencies": {
+    "nodemon": "^2.0.4"
+  },
+  "dependencies": {
+    "args-parser": "^1.1.0",
+    "ejs": "^3.1.5",
+    "express": "^4.17.1",
+    "socket.io": "^2.3.0"
+  }
+}

@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width" />
+    <title>Collab-Pixel-Art</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <h1>COLLAB PIXEL ART</h1>
+    <table>
+        <tr>
+            <td colspan="2">
+                <input id="code" type="text" autocomplete="off" placeholder="0000-0000-0000" maxlength="14"/>
+            </td>
+        </tr>
+        <tr>
+            <td id="code-error" colspan="2" style="color: #ff6961; text-align: center; display: none;">
+                ROOM CODE IS INVALID
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <button id="join">JOIN</button>
+            </td>
+            <td>
+                <button id="create">CREATE</button>
+            </td>
+        </tr>
+    </table>
+    <div id="size-overlay">
+        <table>
+            <tr>
+                <td colspan="3">Between 1 and 250</td>
+            </tr>
+            <tr>
+                <td>
+                    <button id="arrow-button-down" class="arrow-button" style="float: right; background-image: url(/media/arrow-left.svg);"></button>
+                </td>
+                <td>
+                    <input id="canvas-size" type="number" min="1" max="250" value="24">
+                </td>
+                <td>
+                    <button id="arrow-button-up" class="arrow-button" style="float: left; background-image: url(/media/arrow-right.svg)"></button>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="3">
+                    <button id="start">START</button>
+                </td>
+            </tr>
+        </table>
+    </div>
+    <a href="https://github.com/StevenCyb/collab_pixel_art" target="_blank">
+        <img src="/media/git-cat.svg" class="git-cat">
+    </a>
+    <script>
+        var codeInput    = document.getElementById('code'),
+            codeError    = document.getElementById('code-error'),
+            joinButton   = document.getElementById('join'),
+            createButton = document.getElementById('create'),
+            sizeOverlay = document.getElementById('size-overlay'),
+            canvasSize = document.getElementById('canvas-size'),
+            arrowUpButton = document.getElementById('arrow-button-up'),
+            arrowDownButton = document.getElementById('arrow-button-down'),
+            startButton = document.getElementById('start');
+        
+        function isRoomCodeValid() {
+            return /^([0-9a-zA-Z]{4}-){2}[0-9a-zA-Z]{4}$/.test(codeInput.value);
+        }
+
+        function joinRoom() {
+            if(!isRoomCodeValid()) {
+                codeError.style.display = '';
+                return;
+            }
+            window.location.href = '?code=' + String(codeInput.value).toUpperCase();
+        }
+
+        codeInput.addEventListener("input", function() {
+            codeError.style.display = codeInput.value.length == 0 || isRoomCodeValid() ? 'none' : '';
+        });
+        codeInput.addEventListener('keyup', function onEvent(e) {
+            if (e.keyCode === 13) {
+                joinRoom();
+            }
+        });
+        joinButton.addEventListener('click', joinRoom);
+        createButton.addEventListener('click', () => {
+            sizeOverlay.style.display = 'flex';
+        });
+        sizeOverlay.addEventListener('click', () => {
+            sizeOverlay.style.display = 'none';
+        });
+        canvasSize.addEventListener('click', (e) => {
+            e.stopPropagation();
+        });
+        canvasSize.addEventListener('input', (e) => {
+            var value = parseInt(canvasSize.value);
+            if(value > 250) {
+                canvasSize.value = 250;
+            } else if(value < 1) {
+                canvasSize.value = 1;
+            }
+        });
+        arrowUpButton.addEventListener('click', (e) => {
+            e.stopPropagation();
+            var value = parseInt(canvasSize.value);
+            if(value < 250) {
+                canvasSize.value = value + 1;
+            }
+        });
+        arrowDownButton.addEventListener('click', (e) => {
+            e.stopPropagation();
+            var value = parseInt(canvasSize.value);
+            if(value > 1) {
+                canvasSize.value = value - 1;
+            }
+        });
+        startButton.addEventListener('click', (e) => {
+            e.stopPropagation();
+            window.location.href = '?code=new&size=' + canvasSize.value;
+        });
+    </script>
+</body>
+</html>
