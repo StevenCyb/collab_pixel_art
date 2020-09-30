@@ -15,3 +15,5 @@ Listening on port 8080
 ```
 
 Then just open the browser and navigate to `localhost:8080`.
+
+![Demo-GIF](demo.gif)
